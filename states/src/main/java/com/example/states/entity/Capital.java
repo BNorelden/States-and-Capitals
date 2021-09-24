@@ -16,8 +16,7 @@ public class Capital {
     @Column(name = "state_postal_abbreviation")
     private String state_postal_abbreviation;
 
-    public Capital(int capital_id) {
-        this.capital_id = capital_id;
+    public Capital() {
     }
 
     public Capital(String capital_name, String state_postal_abbreviation) {

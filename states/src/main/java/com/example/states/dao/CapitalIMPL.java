@@ -1,8 +1,11 @@
 package com.example.states.dao;
 
 import com.example.states.entity.Capital;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,30 +20,44 @@ public class CapitalIMPL implements CapitalDAO{
         this.entityManager = entityManager;
     }
 
-    //TO WORK ON AFTER I FINISH THE STATE
 
     @Override
+    @Transactional
     public List<Capital> getAllCapitals() {
-        return null;
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<Capital> getAllCapitalsQ = currentSession.createQuery("from Capital");
+        return getAllCapitalsQ.getResultList();
     }
 
     @Override
+    @Transactional
     public void saveOrUpdate(Capital capital) {
-
+        Session currentSession = entityManager.unwrap(Session.class);
+        currentSession.saveOrUpdate(capital);
     }
 
     @Override
+    @Transactional
     public void removeCapitalById(int capitalId) {
-
+        Session currentSession = entityManager.unwrap(Session.class);
+        Capital capital = currentSession.get(Capital.class,capitalId);
+        currentSession.delete(capital);
     }
 
+
+
     @Override
+    @Transactional
     public Object findCapitalById(int capitalId) {
-        return null;
+        Session currentSession = entityManager.unwrap(Session.class);
+        return currentSession.get(Capital.class,capitalId);
     }
 
     @Override
+    @Transactional
     public List<Capital> findCapitalByName(String capitalName) {
-        return null;
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<Capital> findCapitalByNameQ = currentSession.createQuery("from Capital where capital_name like '%"+capitalName+"%'");
+        return findCapitalByNameQ.getResultList();
     }
 }
